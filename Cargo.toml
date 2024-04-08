@@ -15,3 +15,5 @@ name = "jiro"
 tokio = { version = "1", features = ["full"] }
 actix-web = "^4"
 
+[dev-dependencies]
+reqwest = "0.11.4"
