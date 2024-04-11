@@ -12,8 +12,24 @@ path = "src/main.rs"
 name = "jiro"
 
 [dependencies]
-tokio = { version = "1", features = ["full"] }
-actix-web = "^4"
+actix-web = "4"
+tokio = { version = "1", features = ["macros", "rt-multi-thread"] }
+serde = "1.0.115"
+config = { version = "0.13", default-features = false, features = ["yaml"] }
+uuid = { version = "1", features = ["v4"] }
+chrono = { version = "0.4.22", default-features = false, features = ["clock"] }
+
+[dependencies.sqlx]
+version = "0.7"
+default-features = false
+features = [
+    "runtime-tokio-rustls",
+    "macros",
+    "postgres",
+    "uuid",
+    "chrono",
+    "migrate"
+    ]
 
 [dev-dependencies]
 reqwest = "0.11.4"
