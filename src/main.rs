@@ -1,7 +1,7 @@
-use std::net::TcpListener;
-use jiro::start_server::run;
 use jiro::configuration::get_configuration;
+use jiro::start_server::run;
 use sqlx::postgres::PgPool;
+use std::net::TcpListener;
 
 #[tokio::main]
 async fn main() -> Result<(), std::io::Error> {

@@ -1,8 +1,8 @@
+use jiro::configuration::{get_configuration, DatabaseSettings};
+use jiro::start_server::run;
 use sqlx::{Connection, Executor, PgConnection, PgPool};
 use std::net::TcpListener;
 use uuid::Uuid;
-use jiro::configuration::{get_configuration, DatabaseSettings};
-use jiro::start_server::run;
 
 pub struct TestApp {
     pub address: String,
@@ -111,6 +111,42 @@ async fn signup_returns_a_400_when_data_is_missing() {
         // Act
         let response = client
             .post(&format!("{}/signup", &app.address))
+            .header("Content-Type", "application/x-www-form-urlencoded")
+            .body(invalid_body)
+            .send()
+            .await
+            .expect("Failed to execute request.");
+
+        // Assert
+        assert_eq!(
+            400,
+            response.status().as_u16(),
+            // Additional customised error message on test failure
+            "The API did not fail with 400 Bad Request when the payload was {}.",
+            error_message
+        );
+    }
+}
+
+#[tokio::test]
+async fn add_course_returns_a_400_when_data_is_missing() {
+    let app = spawn_app().await;
+    let client = reqwest::Client::new();
+    let test_cases = vec![
+        (
+            "name=le%20guin",
+            "missing the user_id, name, description, language",
+        ),
+        (
+            "language=ursula_le_guin%40gmail.com",
+            "missing all but language",
+        ),
+        ("", "missing both name and language"),
+    ];
+    for (invalid_body, error_message) in test_cases {
+        // Act
+        let response = client
+            .post(&format!("{}/add_course", &app.address))
             .header("Content-Type", "application/x-www-form-urlencoded")
             .body(invalid_body)
             .send()

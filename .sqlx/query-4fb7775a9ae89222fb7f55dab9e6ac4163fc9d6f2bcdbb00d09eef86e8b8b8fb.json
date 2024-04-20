@@ -1,0 +1,18 @@
+{
+  "db_name": "PostgreSQL",
+  "query": "\n    INSERT INTO course(id, name, user_id, language, created_at)\n    VALUES ($1, $2, $3, $4, $5) \n            ",
+  "describe": {
+    "columns": [],
+    "parameters": {
+      "Left": [
+        "Uuid",
+        "Text",
+        "Uuid",
+        "Text",
+        "Timestamptz"
+      ]
+    },
+    "nullable": []
+  },
+  "hash": "4fb7775a9ae89222fb7f55dab9e6ac4163fc9d6f2bcdbb00d09eef86e8b8b8fb"
+}
